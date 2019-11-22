@@ -1,22 +1,29 @@
-#!/usr/bin/env node
+const fs = require('fs')
+const path = require('path')
+const https = require('https')
 
-const Koa = require('koa');
-const router = require('koa-router')();
-const body = require('koa-json-body');
+const Koa = require('koa')
+const router = require('koa-router')()
+const body = require('koa-json-body')
 
-const app = new Koa();
-const port = 8080;
+const { getFileInfo } = require('./handler')
 
-router.post('/message', (ctx, next) => {
-  const { name } = ctx.request.body;
-  ctx.body = {message: `Hello ${name}`};
-});
+const app = new Koa()
+const port = 8080
+
+router.post('/', async (ctx, next) => {
+  const { url = '' } = ctx.request.body
+
+  const info = await getFileInfo(url)
+  console.log('info', info)
+  ctx.body = info
+})
 
 router.get('/health', ctx => {
-  ctx.body = 'OK';
-});
+  ctx.body = 'OK'
+})
 
 app.use(body())
-app.use(router.routes());
-app.listen(port);
-console.log(`Listening on localhost:${port}`);
+app.use(router.routes())
+app.listen(port)
+console.log(`Listening on localhost:${port}`)

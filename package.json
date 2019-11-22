@@ -1,29 +1,37 @@
 {
-  "name": "oms-nodejs",
+  "name": "oms-file-info",
   "version": "0.0.1",
-  "description": "A Nodejs template for building Open Microservices.",
+  "description": "Get file metadata, format, etc",
   "main": "src/index.js",
   "scripts": {
+    "dev": "nodemon src/index.js",
     "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/microservices/node.git"
+    "url": "git+https://github.com/oms-services/file-info.git"
   },
   "author": "Microservices <core@openmicroservices.org>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/microservices/node/issues"
+    "url": "https://github.com/oms-services/file-info/issues"
   },
-  "homepage": "https://github.com/microservices/node#readme",
+  "homepage": "https://github.com/oms-services/file-info#readme",
   "keywords": [
     "microservice",
     "open-microservice",
     "oms"
   ],
   "dependencies": {
+    "bplist-parser": "^0.2.0",
+    "file-type": "^12.4.0",
+    "fs-xattr": "^0.3.0",
     "koa": "^2.7.0",
     "koa-json-body": "^5.3.0",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "music-metadata": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.0"
   }
 }

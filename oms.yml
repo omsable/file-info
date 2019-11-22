@@ -1,26 +1,27 @@
 oms: 1
 info:
   version: 1.0.0
-  title: oms-nodejs
-  description: A Nodejs template for building Open Microservices.
+  title: File Info
+  description: Detect file info, metadata, format, etc
   license:
     name: Apache 2.0
     url: https://opensource.org/licenses/Apache-2.0
 lifecycle:
   startup:
-    command: ["node", "/app/src/index.js"]
+    command: ['node', '/app/src/index.js']
 health:
   http:
     path: /health
     port: 8080
 actions:
-  message:
+  inspect:
     http:
-      path: /message
+      path: /
       method: post
       port: 8080
     arguments:
-      name:
+      url:
+        help: A URL to a file to inspect.
         type: string
         required: true
         in: requestBody
