@@ -4,6 +4,9 @@ const path = require('path')
 const xattr = require('fs-xattr')
 const bplist = require('bplist-parser')
 const fileType = require('file-type')
+const mm = require('music-metadata')
+const util = require('util')
+const _ = require('lodash')
 
 const getFileInfo = url => {
   return new Promise((resolve, reject) => {
@@ -15,7 +18,7 @@ const getFileInfo = url => {
     }
 
     // https://www.npmjs.com/package/music-metadata
-    const filePath = path.resolve('/tmp/file.jpg')
+    const filePath = path.resolve('/tmp/file.mp3')
 
     const request = https.get(url, async response => {
       await response.pipe(fs.createWriteStream(filePath))
@@ -49,6 +52,27 @@ const getFileInfo = url => {
         const type = await fileType(chunk)
         info.format = type
 
+        await mm
+          .parseFile('/Users/matthewhudson/Storyscript/fixtures/action-bronson-action.mp3')
+          .then(metadata => {
+            _.remove(metadata.native, {
+              id: 'PIC'
+            })
+            metadata.native = _.filter(metadata.native, currentObject => {
+              return currentObject.id === 'PIC'
+            })
+
+            delete metadata.common.picture
+            info.metadata = {
+              common: metadata.common,
+              audioFormat: metadata.format
+            }
+          })
+          .catch(err => {
+            console.error('err', err.message)
+            // Not a major error
+            // reject(err)
+          })
         resolve(info)
       })
     })
